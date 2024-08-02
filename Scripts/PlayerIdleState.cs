@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerIdleState : PlayerState
 {
@@ -18,9 +20,16 @@ public class PlayerIdleState : PlayerState
     public override void Update()
     {
         base.Update();
-        if (Input.GetKeyDown(KeyCode.Space)) 
+        if(xInput != 0)
         {
+            if(xInput < 0)
+                player.transform.rotation = new Quaternion(0, 180,0, 0);
+            else
+                player.transform.rotation = new Quaternion(0, 0,0, 0);
+
+            player.SetVelocity(xInput,rb.velocity.y);
             player.playerStateMachine.ChangeState(player.moveState);
+
         }
     }
 

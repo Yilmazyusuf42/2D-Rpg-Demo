@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerState 
 {
+    protected float xInput,yInput;
     protected PlayerStateMachine stateMachine;
     protected Player player;
     private string animBoolName;
-
+    protected Rigidbody2D rb;
+    
     public PlayerState(Player _player, PlayerStateMachine _playerStateMachine, string _animBoolName){
         player = _player;
         stateMachine = _playerStateMachine;
@@ -16,16 +18,15 @@ public class PlayerState
 
 
     public virtual void Enter(){
-        Debug.Log(animBoolName + "içine girmiş bulunmaktayım");
         player.playerAnim.SetBool(animBoolName, true);
+        rb = player.GetComponent<Rigidbody2D>();
     }
 
     public virtual void Update(){
-        Debug.Log(animBoolName + "içinde kalıyor bulunmaktayım");
+        xInput = Input.GetAxisRaw("Horizontal");
     }
 
     public virtual void Exit(){
-        Debug.Log(animBoolName + " içinden çıkmış bulunmaktayım");
         player.playerAnim.SetBool(animBoolName, false);
     }
 
