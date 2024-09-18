@@ -5,7 +5,7 @@ using UnityEditor.AnimatedValues;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerIdleState : PlayerState
+public class PlayerIdleState : PlayerGrounded
 {
     public PlayerIdleState(Player _player, PlayerStateMachine _playerStateMachine, string _animBoolName) : base(_player, _playerStateMachine, _animBoolName)
     {
@@ -22,14 +22,8 @@ public class PlayerIdleState : PlayerState
         base.Update();
         if(xInput != 0)
         {
-            if(xInput < 0)
-                player.transform.rotation = new Quaternion(0, 180,0, 0);
-            else
-                player.transform.rotation = new Quaternion(0, 0,0, 0);
-
             player.SetVelocity(xInput,rb.velocity.y);
             player.playerStateMachine.ChangeState(player.moveState);
-
         }
     }
 
