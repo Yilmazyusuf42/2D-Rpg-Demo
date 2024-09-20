@@ -15,12 +15,17 @@ public class PlayerIdleState : PlayerGrounded
     public override void Enter()
     {
         base.Enter();
+        player.SetVelocity(0,0);
     }
 
     public override void Update()
     {
         base.Update();
-        if(xInput != 0)
+
+        if (xInput == player.facingDir && player.IsWallDetected())
+            return;
+
+        if(xInput != 0 && !player.isBusy)
         {
             player.SetVelocity(xInput,rb.velocity.y);
             player.playerStateMachine.ChangeState(player.moveState);

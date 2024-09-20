@@ -17,7 +17,7 @@ public class PlayerJumpState : PlayerState
     public override void Update()
     {
         base.Update();
-        if(player.IsGroundDetected())
+        if(!player.IsGroundDetected())
             stateMachine.ChangeState(player.playerAirState);
     }
 
