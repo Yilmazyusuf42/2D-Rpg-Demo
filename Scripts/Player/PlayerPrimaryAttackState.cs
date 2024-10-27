@@ -34,7 +34,6 @@ public class PlayerPrimaryAttackState : PlayerState
     public override void Exit()
     {
         base.Exit();
-        Debug.Log($"Last time attacked {lastTimeAttacked} \nComboCount => {comboCounter}");
         lastTimeAttacked = Time.time;
         comboCounter++;
         player.StartCoroutine("IsBusy", .15f);

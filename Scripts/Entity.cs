@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class Entity : MonoBehaviour 
@@ -8,7 +10,16 @@ public class Entity : MonoBehaviour
 
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
+    public EntityFx entityFx{ get; private set; }
 
+    [Header("Taking Damage Attributes")]
+    protected bool isDamaged;
+    [SerializeField]protected  Vector2 damageShaking; 
+    [SerializeField]protected float takingDamageDuration;  // It's going to be 0.07f
+
+    [Header("Stunend Variables")]
+    public float stunnedDuration;
+    public Vector2 stunnedShaking;
 
     public int facingDir { get; private set; } = 1;
     private bool facingRight = true;
@@ -22,6 +33,9 @@ public class Entity : MonoBehaviour
     [SerializeField] protected Transform wallCheck;
     [SerializeField] protected float wallCheckDistance;
     [SerializeField] protected  LayerMask whatIsGround;
+    [SerializeField] public Transform attackCircle;
+    [SerializeField] public float attackCirclekRadius;
+    
 
 
     protected virtual void Awake()
@@ -31,6 +45,7 @@ public class Entity : MonoBehaviour
 
     protected virtual void Start()
     {
+        entityFx = GetComponentInChildren<EntityFx>();
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
 
@@ -53,6 +68,7 @@ public class Entity : MonoBehaviour
     {
         Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
+        Gizmos.DrawWireSphere(attackCircle.position, attackCirclekRadius);
     }
     #endregion
 
@@ -75,9 +91,33 @@ public class Entity : MonoBehaviour
 
     public void SetVelocity(float _xVelocity, float _yVelocity)
     {
+        if(isDamaged) 
+            return;
+        
+
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
         FlipController(_xVelocity);
     }
 
+    public virtual void Damaged(){
+        Debug.Log(gameObject.name + "  damaged");
+        string hitFunction = "GetHit";
+        string takingDamage = "TakingDamage";
+
+        entityFx.StartCoroutine(hitFunction);
+        StartCoroutine(takingDamage);
+
+    }
+    
+    public virtual IEnumerator TakingDamage()
+    {
+        isDamaged = true;
+        rb.velocity = new Vector2(damageShaking.x * -facingDir, damageShaking.y);
+        yield return new WaitForSeconds(takingDamageDuration);
+        isDamaged = false;
+    }
+
+    public virtual (Vector2, float) AttackInfos() => 
+    (new Vector2(attackCircle.position.x, attackCircle.position.y), attackCirclekRadius);
 
 }

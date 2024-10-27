@@ -17,10 +17,7 @@ public class SkaletonIdleState : SkaletonGrounded
         stateTimer = enemy.idleWaitingTime;
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-    }
+    public override void Exit() => base.Exit();
 
     public override void Update()
     {

@@ -13,7 +13,6 @@ public class SkeletonAttack : EnemyState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("I Attacked");
         enemy.lastTimeAttacked = Time.time;
     }
 

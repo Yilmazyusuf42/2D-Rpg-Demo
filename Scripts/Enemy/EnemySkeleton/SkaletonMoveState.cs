@@ -25,6 +25,7 @@ public class SkaletonMoveState : SkaletonGrounded
     public override void Update()
     {
         base.Update();
+    
 
         enemy.SetVelocity(enemy.speed * enemy.facingDir, enemy.rb.velocity.y);
 
