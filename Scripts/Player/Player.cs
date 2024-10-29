@@ -12,13 +12,9 @@ public class Player : Entity
 
     [Header("Attack Movements")]
     public Vector2[] attackMovements;
-    [Header("Dash infos")]
-    public float dashSpeed;
     public float dashDir { get; private set; }
-    private float dashTimer;
-    [SerializeField] private float dashCoolDown = 3f;
-    public float dashDuration = .4f;
 
+    public SkillManager skill { get; private set; }
 
     #region States
     public PlayerStateMachine playerStateMachine { get; private set; }
@@ -52,6 +48,7 @@ public class Player : Entity
     protected override void Start()
     {
         base.Start();
+        skill = SkillManager.instance;
         playerStateMachine.Initialize(idleState);
     }
 
@@ -71,10 +68,8 @@ public class Player : Entity
         if (IsWallDetected())
             return;
 
-        dashTimer -= Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.LeftShift) && dashTimer < 0)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dashAbility.CanUseSkill())
         {
-            dashTimer = dashCoolDown;
             dashDir = Input.GetAxisRaw("Horizontal");
             if (dashDir == 0)
                 dashDir = facingDir;

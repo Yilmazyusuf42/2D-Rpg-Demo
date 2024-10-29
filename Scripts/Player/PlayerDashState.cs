@@ -11,7 +11,8 @@ public class PlayerDashState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        stateTimer = player.dashDuration;
+        stateTimer = SkillManager.instance.dashAbility.dashDuration;
+        player.skill.cloneAbility.CreateClone(player.transform, player.skill.cloneAbility.cloneDuration);
     }
 
     public override void Exit()
@@ -31,12 +32,12 @@ public class PlayerDashState : PlayerState
             return;
         }
 
-        player.SetVelocity(player.dashSpeed * player.dashDir, rb.velocity.y);
+        player.SetVelocity(SkillManager.instance.dashAbility.dashSpeed * player.dashDir, rb.velocity.y);
 
         if (stateTimer < 0)
             stateMachine.ChangeState(player.idleState);
 
 
     }
-    
+
 }

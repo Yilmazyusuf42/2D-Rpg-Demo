@@ -19,6 +19,7 @@ public class PlayerCounterAttack : PlayerState
 
     public override void Update()
     {
+        player.SetVelocity(0, 0);
         base.Update();
         var enemies = Physics2D.OverlapCircleAll(player.attackCircle.transform.position, player.attackCirclekRadius);
         foreach (var enemy in enemies)
