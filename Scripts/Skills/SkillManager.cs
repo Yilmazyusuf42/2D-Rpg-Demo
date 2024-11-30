@@ -9,6 +9,7 @@ public class SkillManager : MonoBehaviour
     #region Abilities
     public DashAbility dashAbility { get; private set; }
     public CloneAbility cloneAbility { get; private set; }
+    public SwordSkill swordSkill { get; private set; }
 
     #endregion
 
@@ -21,6 +22,7 @@ public class SkillManager : MonoBehaviour
 
         dashAbility = GetComponent<DashAbility>();
         cloneAbility = GetComponent<CloneAbility>();
+        swordSkill = GetComponent<SwordSkill>();
     }
 
 }

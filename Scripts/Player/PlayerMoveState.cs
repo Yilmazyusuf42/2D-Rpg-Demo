@@ -15,7 +15,6 @@ public class PlayerMoveState : PlayerGrounded
     public override void Update()
     {
         base.Update();
-
         if (!player.IsWallDetected())
             player.SetVelocity(xInput * player.speed, rb.velocity.y);
         else
@@ -30,9 +29,9 @@ public class PlayerMoveState : PlayerGrounded
         }
     }
 
-    public override void Exit(){
+    public override void Exit()
+    {
         base.Exit();
-        
     }
 
 }

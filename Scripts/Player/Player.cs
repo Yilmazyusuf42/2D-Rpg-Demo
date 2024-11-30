@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
@@ -9,12 +10,17 @@ public class Player : Entity
     public float speed = 8f;
     public float jumpForce = 12f;
     public float counterAttackDuration;
+    public float swordReturningImpact;
+
 
     [Header("Attack Movements")]
     public Vector2[] attackMovements;
+    public float slideTime;
+
     public float dashDir { get; private set; }
 
     public SkillManager skill { get; private set; }
+    public GameObject sword { get; private set; }
 
     #region States
     public PlayerStateMachine playerStateMachine { get; private set; }
@@ -28,6 +34,9 @@ public class Player : Entity
 
     public PlayerPrimaryAttackState playerPrimaryAttack { get; private set; }
     public PlayerCounterAttack playerCounterAttack { get; private set; }
+    public PlayerAimSwordState playerAimSwordState { get; private set; }
+    public PlayerCatchSwordState playerCatchSwordState { get; private set; }
+    public PlayerThrowSwordState playerThrowSwordState { get; private set; }
     #endregion
     public bool isBusy { get; private set; }
     protected override void Awake()
@@ -43,6 +52,10 @@ public class Player : Entity
         playerWallJump = new PlayerWallJumpState(this, playerStateMachine, "Jump");
         playerPrimaryAttack = new PlayerPrimaryAttackState(this, playerStateMachine, "Attack");
         playerCounterAttack = new PlayerCounterAttack(this, playerStateMachine, "CounterAttack");
+        playerAimSwordState = new PlayerAimSwordState(this, playerStateMachine, "AimSword");
+        playerCatchSwordState = new PlayerCatchSwordState(this, playerStateMachine, "CatchingSword");
+        playerThrowSwordState = new PlayerThrowSwordState(this, playerStateMachine, "ThrowSword");
+
     }
 
     protected override void Start()
@@ -87,10 +100,12 @@ public class Player : Entity
         isBusy = false;
     }
 
+    public void AssingtheSword(GameObject _sword) => sword = _sword;
 
-
-
-
-
-
+    public void CatchTheSword()
+    {
+        playerStateMachine.ChangeState(playerCatchSwordState);
+        Destroy(sword);
+        StartCoroutine("IsBusy", .2f);
+    }
 }

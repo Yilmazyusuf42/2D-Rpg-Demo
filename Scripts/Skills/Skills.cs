@@ -7,8 +7,13 @@ public class Skills : MonoBehaviour
 {
     public float Cooldown;
     float coolDownTimer;
+    protected Player player;
 
+    void Awake()
+    {
+        player = PlayerManager.instance.player;
 
+    }
     protected virtual void Update()
     {
         coolDownTimer -= Time.deltaTime;

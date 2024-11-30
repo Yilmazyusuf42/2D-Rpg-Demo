@@ -20,4 +20,9 @@ public class PlayerAnimationTriggers : MonoBehaviour
             enemy.GetComponent<Enemy>()?.Damaged();
         }
     }
+
+    private void ThrowSword()
+    {
+        SkillManager.instance.swordSkill.CreateSword();
+    }
 }

@@ -7,18 +7,28 @@ public class Enemy : Entity
     [SerializeField] protected LayerMask whatIsPlayer;
 
 
+    private float freezeDuration;
+    private float defaultSpeed;
+
+
     protected bool isStunned;
     [SerializeField] GameObject stunnedIcon;
     [HideInInspector] public float stateTimer;
+
+
     [Header("Move İnfo")]
     public float idleWaitingTime;
     public float speed;
+
+
     [Header("Attack")]
     public float attackDistance;
     public float battleDuration;
     public float battleDistance;
     [SerializeField] float attackCoolDown;
     [HideInInspector] public float lastTimeAttacked;
+
+
 
     public EnemyStateMachine enemyStateMachine { get; private set; }
 
@@ -31,6 +41,7 @@ public class Enemy : Entity
     protected override void Start()
     {
         base.Start();
+        defaultSpeed = speed;
     }
 
     // Update is called once per frame
@@ -85,5 +96,26 @@ public class Enemy : Entity
 
         return false;
 
+    }
+
+    private void BeingFreeze(bool _status)
+    {
+        if (_status)
+        {
+            anim.speed = 0;
+            speed = 0;
+        }
+        else
+        {
+            anim.speed = 1;
+            speed = defaultSpeed;
+        }
+    }
+
+    public IEnumerator FreezingFor(float _freezeDuration)
+    {
+        BeingFreeze(true);
+        yield return new WaitForSeconds(_freezeDuration);
+        BeingFreeze(false);
     }
 }

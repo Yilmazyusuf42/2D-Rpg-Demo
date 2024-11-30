@@ -9,15 +9,19 @@ public class PlayerGrounded : PlayerState
     }
 
 
-    public override void Enter()
-    {
-        base.Enter();
-    }
     public override void Update()
     {
         base.Update();
 
-        if(Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Mouse1) && HasSword())
+        {
+            if (xInput != 0)
+                player.playerAimSwordState.fromMovingState = true;
+            stateMachine.ChangeState(player.playerAimSwordState);
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
             stateMachine.ChangeState(player.playerCounterAttack);
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -26,15 +30,19 @@ public class PlayerGrounded : PlayerState
         if (!player.IsGroundDetected())
             stateMachine.ChangeState(player.playerAirState);
 
-        if(Input.GetKeyDown(KeyCode.Space) && player.IsGroundDetected())
+        if (Input.GetKeyDown(KeyCode.Space) && player.IsGroundDetected())
             stateMachine.ChangeState(player.playerJump);
-
-    
-        
     }
-
-    public override void Exit()
+    bool HasSword()
     {
-        base.Exit();
+        if (!player.sword)
+        {
+            return true;
+        }
+        player.sword.GetComponent<SwordSkillController>().ReturningSword();
+        return false;
+
     }
+
+
 }
