@@ -35,6 +35,7 @@ public class Enemy : Entity
     protected override void Awake()
     {
         base.Awake();
+        ClosePerryIcon();
         enemyStateMachine = new EnemyStateMachine();
     }
 
@@ -98,7 +99,7 @@ public class Enemy : Entity
 
     }
 
-    private void BeingFreeze(bool _status)
+    public void BeingFreeze(bool _status)
     {
         if (_status)
         {

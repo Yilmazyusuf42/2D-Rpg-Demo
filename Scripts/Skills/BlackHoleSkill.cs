@@ -1,22 +1,43 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
-public class BlackHoleSkill : MonoBehaviour
+public class BlackholeSkill : Skills
 {
-    public float maxScale;
-    [Range(0f, 1f)] public float scaleSpeed;
+    [SerializeField] private GameObject BlackholeSkillPrefab;
+    [SerializeField] private float maxSize;
+    [SerializeField] private float scaleSpeed;
+    [SerializeField] private int attackAmount;
+    [SerializeField] private float cloneCoolDown;
+    [SerializeField] private float blackholeDuration;
 
-    public bool canScale;
 
-    // Update is called once per frame
-    void Update()
+
+    public override void UseSkill()
     {
-        if (canScale)
-            transform.localScale = Vector2.Lerp(transform.localScale, Vector2.one * maxScale, scaleSpeed * Time.deltaTime);
+        base.UseSkill();
+        GameObject blackholePref = Instantiate(BlackholeSkillPrefab, player.transform.position, Quaternion.identity);
+
+        BlackHoleSkill_Controller blackholeSkill = blackholePref.GetComponent<BlackHoleSkill_Controller>();
+        blackholeSkill.BlackHoleSetup(maxSize, scaleSpeed, attackAmount, cloneCoolDown, blackholeDuration);
+    }
+
+
+    protected override void Update()
+    {
+        base.Update();
 
     }
+
+    public bool CanUseBlackhole()
+    {
+        if (coolDownTimer < 0)
+            return true;
+        else
+        {
+            Debug.Log("Blackhole dinleniyor");
+            return false;
+        }
+    }
+
 }

@@ -7,6 +7,8 @@ public class DashAbility : Skills
     public float dashSpeed;
     public float dashDuration;
 
+
+
     protected override void Update()
     {
         base.Update();
@@ -15,6 +17,6 @@ public class DashAbility : Skills
     public override void UseSkill()
     {
         base.UseSkill();
-        Debug.Log("i used dash ability hello");
     }
+
 }

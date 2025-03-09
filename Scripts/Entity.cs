@@ -1,21 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 
-public class Entity : MonoBehaviour 
+public class Entity : MonoBehaviour
 {
 
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
-    public EntityFx entityFx{ get; private set; }
+    public EntityFx entityFx { get; private set; }
+    public SpriteRenderer sr { get; private set; }
 
     [Header("Taking Damage Attributes")]
     protected bool isDamaged;
-    [SerializeField]protected  Vector2 damageShaking; 
-    [SerializeField]protected float takingDamageDuration;  // It's going to be 0.07f
+    [SerializeField] protected Vector2 damageShaking;
+    [SerializeField] protected float takingDamageDuration;  // It's going to be 0.07f
 
     [Header("Stunend Variables")]
     public float stunnedDuration;
@@ -32,23 +34,38 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float groundCheckDistance;
     [SerializeField] protected Transform wallCheck;
     [SerializeField] protected float wallCheckDistance;
-    [SerializeField] protected  LayerMask whatIsGround;
+    [SerializeField] protected LayerMask whatIsGround;
     [SerializeField] public Transform attackCircle;
     [SerializeField] public float attackCirclekRadius;
-    
+
 
 
     protected virtual void Awake()
     {
+        Quaternion rotation = transform.rotation;
+
+        Debug.Log($"Quaternion {rotation}");
+        // Convert the quaternion to Euler angles
+        Vector3 eulerAngles = rotation.eulerAngles;
+        Debug.Log($"eurlar angles {eulerAngles}");
+
+        // Check if the y-axis rotation is 180 or -180 degrees
+        if (Mathf.Approximately(eulerAngles.y, 180f) || Mathf.Approximately(eulerAngles.y, -180f))
+        {
+            facingDir = -1;
+            facingRight = false;
+
+        }
+
 
     }
 
     protected virtual void Start()
     {
-        entityFx = GetComponentInChildren<EntityFx>();
+        sr = GetComponentInChildren<SpriteRenderer>();
         anim = GetComponentInChildren<Animator>();
+        entityFx = GetComponentInChildren<EntityFx>();
         rb = GetComponent<Rigidbody2D>();
-
     }
 
     protected virtual void Update()
@@ -56,7 +73,7 @@ public class Entity : MonoBehaviour
 
     }
 
-    
+
 
 
 
@@ -91,15 +108,16 @@ public class Entity : MonoBehaviour
 
     public void SetVelocity(float _xVelocity, float _yVelocity)
     {
-        if(isDamaged) 
+        if (isDamaged)
             return;
-        
+
 
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
         FlipController(_xVelocity);
     }
 
-    public virtual void Damaged(){
+    public virtual void Damaged()
+    {
         Debug.Log(gameObject.name + "  damaged");
         string hitFunction = "GetHit";
         string takingDamage = "TakingDamage";
@@ -108,7 +126,7 @@ public class Entity : MonoBehaviour
         StartCoroutine(takingDamage);
 
     }
-    
+
     public virtual IEnumerator TakingDamage()
     {
         isDamaged = true;
@@ -117,7 +135,17 @@ public class Entity : MonoBehaviour
         isDamaged = false;
     }
 
-    public virtual (Vector2, float) AttackInfos() => 
+    public virtual (Vector2, float) AttackInfos() =>
     (new Vector2(attackCircle.position.x, attackCircle.position.y), attackCirclekRadius);
+
+    public virtual void Dissappearing(bool _condition)
+    {
+        if (_condition)
+            sr.color = Color.clear;
+        else
+            sr.color = Color.white;
+
+    }
+
 
 }

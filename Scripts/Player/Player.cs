@@ -37,6 +37,7 @@ public class Player : Entity
     public PlayerAimSwordState playerAimSwordState { get; private set; }
     public PlayerCatchSwordState playerCatchSwordState { get; private set; }
     public PlayerThrowSwordState playerThrowSwordState { get; private set; }
+    public BlackholeState playerBlacholeState { get; private set; }
     #endregion
     public bool isBusy { get; private set; }
     protected override void Awake()
@@ -55,6 +56,7 @@ public class Player : Entity
         playerAimSwordState = new PlayerAimSwordState(this, playerStateMachine, "AimSword");
         playerCatchSwordState = new PlayerCatchSwordState(this, playerStateMachine, "CatchingSword");
         playerThrowSwordState = new PlayerThrowSwordState(this, playerStateMachine, "ThrowSword");
+        playerBlacholeState = new BlackholeState(this, playerStateMachine, "Jump");
 
     }
 
@@ -71,6 +73,9 @@ public class Player : Entity
         base.Update();
         playerStateMachine.currentState.Update();
         CheckingForDash();
+
+        if (Input.GetKeyDown(KeyCode.F))
+            skill.crystalSkill.CanUseSkill();
     }
 
 
@@ -106,6 +111,11 @@ public class Player : Entity
     {
         playerStateMachine.ChangeState(playerCatchSwordState);
         Destroy(sword);
-        StartCoroutine("IsBusy", .2f);
+        StartCoroutine("IsBusy", 0.2f);
+    }
+
+    public void ExitBlackholeAbility()
+    {
+        playerStateMachine.ChangeState(playerAirState);
     }
 }

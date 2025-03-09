@@ -43,6 +43,7 @@ public class EnemySkeleton : Enemy
         if (base.CanBeStunned())
         {
             enemyStateMachine.ChangeState(SkeletonStunned);
+
             return true;
         }
         return false;

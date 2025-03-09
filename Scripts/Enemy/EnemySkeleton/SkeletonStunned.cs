@@ -5,7 +5,7 @@ using UnityEngine;
 public class SkeletonStunned : EnemyState
 {
     EnemySkeleton enemy;
-public SkeletonStunned(Enemy _enemyBase, EnemyStateMachine _enemyStateMachine, string _animBoolName, EnemySkeleton _enemy) : base(_enemyBase, _enemyStateMachine, _animBoolName)
+    public SkeletonStunned(Enemy _enemyBase, EnemyStateMachine _enemyStateMachine, string _animBoolName, EnemySkeleton _enemy) : base(_enemyBase, _enemyStateMachine, _animBoolName)
     {
         enemy = _enemy;
     }
@@ -14,19 +14,20 @@ public SkeletonStunned(Enemy _enemyBase, EnemyStateMachine _enemyStateMachine, s
     {
         base.Enter();
         enemy.rb.velocity = new Vector2(enemy.stunnedShaking.x * -enemy.facingDir, enemy.stunnedShaking.y);
-        enemy.entityFx.InvokeRepeating("RedBlink",0f,.2f);
+        enemy.entityFx.InvokeRepeating("RedBlink", 0f, .2f);
         stateTimer = enemy.stunnedDuration;
     }
     public override void Update()
     {
         base.Update();
-        if(stateTimer < 0)
+        if (stateTimer < 0)
             enemyStateMachine.ChangeState(enemy.idleState);
     }
 
     public override void Exit()
     {
         base.Exit();
-        enemy.entityFx.Invoke("CancelRedBlink",0f);
+        enemy.ClosePerryIcon();
+        enemy.entityFx.Invoke("CancelRedBlink", 0f);
     }
 }

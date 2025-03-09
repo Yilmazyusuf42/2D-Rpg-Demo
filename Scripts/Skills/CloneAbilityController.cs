@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 
 public class CloneAbilityController : MonoBehaviour
@@ -26,17 +25,25 @@ public class CloneAbilityController : MonoBehaviour
     {
         timer -= Time.deltaTime;
         if (timer < 0 || attackFinished)
+        {
             sr.color = new Color(1, 1, 1, sr.color.a - (Time.deltaTime * SkillManager.instance.cloneAbility.fadingSpeed));
+            Invoke("DestroyObject", 1f);
+        }
     }
-    public void SetupClone(Transform _transform, float _cloneDuration)
+
+    void DestroyObject() => Destroy(gameObject);
+
+    public void SetupClone(Transform _transform, float _cloneDuration, Vector3 ofset, Transform _closestEnemy)
     {
-        transform.position = _transform.position;
+        closestEnemy = _closestEnemy;
+        transform.position = _transform.position + ofset;
         timer = _cloneDuration;
         if (canAttack)
-            anim.SetInteger("AttackCounter", UnityEngine.Random.Range(1, 3));
+            anim.SetInteger("AttackCounter", Random.Range(1, 3));
 
         FaceClosestEnemy();
     }
+
 
     private void TriggerTheFinishedAnimation()
     {
@@ -56,22 +63,6 @@ public class CloneAbilityController : MonoBehaviour
 
     private void FaceClosestEnemy()
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 25);
-
-        foreach (var hit in enemies)
-        {
-            if (hit.GetComponent<Enemy>() != null)
-            {
-                float distance = Vector2.Distance(transform.position, hit.transform.position);
-                if (distance < closesDistance || closesDistance == null)
-                {
-                    closesDistance = distance;
-                    closestEnemy = hit.transform;
-                }
-            }
-
-        }
-
         if (closestEnemy != null)
         {
             if (closestEnemy.transform.position.x < transform.position.x)

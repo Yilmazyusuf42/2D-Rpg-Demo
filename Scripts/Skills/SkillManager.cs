@@ -10,7 +10,8 @@ public class SkillManager : MonoBehaviour
     public DashAbility dashAbility { get; private set; }
     public CloneAbility cloneAbility { get; private set; }
     public SwordSkill swordSkill { get; private set; }
-
+    public BlackholeSkill blackhole_Skill { get; private set; }
+    public CrystalSkill crystalSkill { get; private set; }
     #endregion
 
     void Awake()
@@ -23,6 +24,8 @@ public class SkillManager : MonoBehaviour
         dashAbility = GetComponent<DashAbility>();
         cloneAbility = GetComponent<CloneAbility>();
         swordSkill = GetComponent<SwordSkill>();
+        blackhole_Skill = gameObject.GetComponent<BlackholeSkill>();
+        crystalSkill = GetComponent<CrystalSkill>();
     }
 
 }

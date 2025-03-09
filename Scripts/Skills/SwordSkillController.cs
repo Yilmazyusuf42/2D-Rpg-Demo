@@ -224,6 +224,7 @@ public class SwordSkillController : MonoBehaviour
                 }
                 if (enemyList.Count > 1)
                     isBouncing = true;
+
             }
 
 
@@ -256,10 +257,15 @@ public class SwordSkillController : MonoBehaviour
         SkillDamagedEnemy(other.GetComponent<Enemy>());
 
         anim.SetBool("Flip", false);
+        
     }
+
+    
 
     private void SkillDamagedEnemy(Enemy other)
     {
+        if (other == null)
+            return;
         other.Damaged();
         other.StartCoroutine("FreezingFor", freezeDuration);
     }

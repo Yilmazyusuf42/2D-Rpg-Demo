@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerCounterAttack : PlayerState
 {
+    bool counterAttackCloneCreated;
+
     public PlayerCounterAttack(Player _player, PlayerStateMachine _playerStateMachine, string _animBoolName) : base(_player, _playerStateMachine, _animBoolName)
     {
     }
@@ -13,6 +15,7 @@ public class PlayerCounterAttack : PlayerState
     public override void Enter()
     {
         base.Enter();
+        counterAttackCloneCreated = false;
         stateTimer = player.counterAttackDuration;
         player.anim.SetBool("CounterAttackSuccess", false);
     }
@@ -27,6 +30,8 @@ public class PlayerCounterAttack : PlayerState
             if (enemy.GetComponent<EnemySkeleton>()?.CanBeStunned() == true)
             {
                 player.anim.SetBool("CounterAttackSuccess", true);
+                if (!counterAttackCloneCreated)
+                    CallCounterAttackClone(enemy);
                 stateTimer = 2f;
             }
         }
@@ -37,5 +42,12 @@ public class PlayerCounterAttack : PlayerState
     public override void Exit()
     {
         base.Exit();
+    }
+
+    void CallCounterAttackClone(Collider2D enemy)
+    {
+        counterAttackCloneCreated = true;
+        player.skill.cloneAbility.CreateCloneCounterAttack(enemy.transform);
+
     }
 }

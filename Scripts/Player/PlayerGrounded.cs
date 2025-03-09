@@ -13,6 +13,10 @@ public class PlayerGrounded : PlayerState
     {
         base.Update();
 
+
+        if (Input.GetKeyDown(KeyCode.R) && player.skill.blackhole_Skill.CanUseBlackhole())
+            stateMachine.ChangeState(player.playerBlacholeState);
+
         if (Input.GetKeyDown(KeyCode.Mouse1) && HasSword())
         {
             if (xInput != 0)
