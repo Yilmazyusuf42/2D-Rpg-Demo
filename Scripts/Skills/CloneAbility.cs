@@ -13,18 +13,31 @@ public class CloneAbility : Skills
     [SerializeField] private bool canCreateCloneDashStart;
     [SerializeField] private bool canCreateCloneDashEnd;
     [SerializeField] private bool canCreateCloneCounterAttack;
+    [SerializeField] private bool canCreateMultipleClone;
+    [SerializeField] public bool crystalInsteadofClone;
 
 
     public void CreateClone(Transform _transform, float duration)
     {
+        if (crystalInsteadofClone)
+        {
+            SkillManager.instance.crystalSkill.CreateCrystal();
+            return;
+        }
+
         CloneAbilityController newClone = Instantiate(playerClone).GetComponent<CloneAbilityController>();
-        newClone.SetupClone(_transform, duration, Vector3.zero, GetClosestEnemy(newClone.transform));
+        newClone.SetupClone(_transform, duration, Vector3.zero, GetClosestEnemy(newClone.transform), canCreateMultipleClone, player);
     }
     // Here default duration is 1f and there is ofset
     public void CreateClone(Transform _transform, Vector3 ofset)
     {
+        if (crystalInsteadofClone)
+        {
+            SkillManager.instance.crystalSkill.CreateCrystal();
+            return;
+        }
         CloneAbilityController newClone = Instantiate(playerClone).GetComponent<CloneAbilityController>();
-        newClone.SetupClone(_transform, 1f, ofset, GetClosestEnemy(newClone.transform));
+        newClone.SetupClone(_transform, 1f, ofset, GetClosestEnemy(newClone.transform), canCreateMultipleClone, player);
     }
 
 
@@ -52,7 +65,11 @@ public class CloneAbility : Skills
 
     IEnumerator CreateCounterAttackClone(Transform _transform, Vector3 _ofset)
     {
-        yield return new WaitForSeconds(0.4f);
+        if (crystalInsteadofClone)
+            yield return new WaitForSeconds(0.1f);
+
+        else
+            yield return new WaitForSeconds(0.4f);
         player.skill.cloneAbility.CreateClone(_transform, _ofset);
 
     }

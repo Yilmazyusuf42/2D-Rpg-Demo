@@ -22,6 +22,14 @@ public class BlackHoleSkill_Controller : MonoBehaviour
     float coolDownTimer;
     float ofsetRange = 1;
 
+
+    void Start()
+    {
+        if (SkillManager.instance.cloneAbility.crystalInsteadofClone)
+            canPlayerDissappear = false;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
@@ -98,6 +106,7 @@ public class BlackHoleSkill_Controller : MonoBehaviour
         ofsetRange = (Random.Range(0, 100) > 50) ? ofsetRange : -ofsetRange;
 
         SkillManager.instance.cloneAbility.CreateClone(targets[Random.Range(0, targets.Count)], new Vector3(ofsetRange, 0));
+
 
     }
 

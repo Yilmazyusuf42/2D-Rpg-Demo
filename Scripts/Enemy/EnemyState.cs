@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class EnemyState 
+public class EnemyState
 {
 
     Enemy enemyBase;
@@ -16,7 +16,7 @@ public class EnemyState
 
 
 
-    public  EnemyState(Enemy _enemyBase, EnemyStateMachine _enemyStateMachine, string _animBoolName)
+    public EnemyState(Enemy _enemyBase, EnemyStateMachine _enemyStateMachine, string _animBoolName)
     {
         enemyBase = _enemyBase;
         animBoolName = _animBoolName;
@@ -27,7 +27,7 @@ public class EnemyState
     public virtual void Enter()
     {
 
-        enemyBase.anim.SetBool(animBoolName,true);
+        enemyBase.anim.SetBool(animBoolName, true);
         triggerCalled = false;
     }
 
@@ -36,9 +36,10 @@ public class EnemyState
         stateTimer -= Time.deltaTime;
     }
 
-    public virtual void Exit() 
-    { 
-        enemyBase.anim.SetBool(animBoolName,false);
+    public virtual void Exit()
+    {
+        enemyBase.anim.SetBool(animBoolName, false);
+        enemyBase.lastAnimation = animBoolName;
     }
 
     public virtual void AnimationFinished()

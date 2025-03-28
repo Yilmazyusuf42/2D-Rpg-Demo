@@ -20,6 +20,7 @@ public class BlackholeState : PlayerState
         skillIsUsed = false;
         rb.gravityScale = 0;
         stateTimer = flyTime;
+
     }
 
     public override void Update()

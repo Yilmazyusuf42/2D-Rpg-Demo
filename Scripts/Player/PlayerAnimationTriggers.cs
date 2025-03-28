@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class PlayerAnimationTriggers : MonoBehaviour
@@ -17,7 +16,9 @@ public class PlayerAnimationTriggers : MonoBehaviour
 
         foreach (var enemy in enemies)
         {
-            enemy.GetComponent<Enemy>()?.Damaged();
+
+            CharacterStats target = enemy.GetComponent<CharacterStats>();
+            player.stats.DoDamage(target);
         }
     }
 

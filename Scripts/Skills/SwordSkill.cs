@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-
 
 public enum SwordType
 {
@@ -54,11 +52,12 @@ public class SwordSkill : Skills
     #endregion
 
 
-    private void Start()
+    private void Awake()
     {
         GenerateDots();
 
         SetupGravity();
+
     }
 
     private void SetupGravity()
@@ -138,6 +137,7 @@ public class SwordSkill : Skills
             dotsList[i] = Instantiate(dotsPrefab, dotsParent);
             dotsList[i].SetActive(false);
         }
+        Debug.Log("Noktalar üretildi");
     }
 
     private Vector2 DotsPosition(float t)

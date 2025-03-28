@@ -7,8 +7,6 @@ public class DashAbility : Skills
     public float dashSpeed;
     public float dashDuration;
 
-
-
     protected override void Update()
     {
         base.Update();

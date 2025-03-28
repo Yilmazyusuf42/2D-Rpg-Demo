@@ -1,23 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO.Compression;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CrystelSkillController : MonoBehaviour
 {
     Animator anim => GetComponent<Animator>();
     CircleCollider2D damageArea => GetComponent<CircleCollider2D>();
     Transform closestEnemy;
-
+    Player player;
     float skillTimer;
     bool canExplode;
     bool canRoam;
+    bool canLeaveCopySelf;
     float roamSpeed;
     bool canGrow;
     float explodeSize = 5f;
     float growSpeed = 5f;
+    LayerMask enemyType;
 
 
 
@@ -45,6 +42,9 @@ public class CrystelSkillController : MonoBehaviour
 
     }
 
+    public void FinishWithoutExplode() => DestroySelf();
+
+
     public void FinishCrystal()
     {
         if (canExplode)
@@ -60,16 +60,21 @@ public class CrystelSkillController : MonoBehaviour
     {
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, damageArea.radius);
 
-        foreach (Collider2D enemy in enemies)
+        foreach (var enemy in enemies)
         {
-            enemy.GetComponent<Enemy>()?.Damaged();
+            if (enemy.GetComponent<Enemy>() != null)
+                player.stats.DoMagicalDamage(enemy.GetComponent<CharacterStats>());
+
             Debug.Log("birisi var içimde " + enemy.name);
         }
 
     }
 
-    public void SetupCrystelSkill(float _skillDuration, bool _canExplode, bool _canRoam, float _roamSpeed, Transform _closestEnemy)
+    public void SetupCrystelSkill(float _skillDuration, bool _canExplode, bool _canRoam, bool _canLeaveCopySelf, float _roamSpeed, Transform _closestEnemy, LayerMask _enemyTyep, Player _player)
     {
+        player = _player;
+        enemyType = _enemyTyep;
+        canLeaveCopySelf = _canLeaveCopySelf;
         roamSpeed = _roamSpeed;
         closestEnemy = _closestEnemy;
         skillTimer = _skillDuration;
@@ -78,6 +83,16 @@ public class CrystelSkillController : MonoBehaviour
 
         if (closestEnemy == null)
             canRoam = false;
+    }
+    public void ChooseRandomEnemy()
+    {
+        float maxRange = SkillManager.instance.blackhole_Skill.RadiusofBlackhole();
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, maxRange, enemyType);
+        if (enemies.Length > 0)
+        {
+            closestEnemy = enemies[Random.Range(0, enemies.Length)].GetComponent<Transform>();
+        }
+
     }
 
     public bool RoamStatus() => canRoam;

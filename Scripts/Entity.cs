@@ -13,6 +13,8 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rb { get; private set; }
     public EntityFx entityFx { get; private set; }
     public SpriteRenderer sr { get; private set; }
+    public CharacterStats stats { get; private set; }
+    public CapsuleCollider2D cd { get; private set; }
 
     [Header("Taking Damage Attributes")]
     protected bool isDamaged;
@@ -39,15 +41,14 @@ public class Entity : MonoBehaviour
     [SerializeField] public float attackCirclekRadius;
 
 
+    public Action OnFlipped;
 
     protected virtual void Awake()
     {
         Quaternion rotation = transform.rotation;
 
-        Debug.Log($"Quaternion {rotation}");
         // Convert the quaternion to Euler angles
         Vector3 eulerAngles = rotation.eulerAngles;
-        Debug.Log($"eurlar angles {eulerAngles}");
 
         // Check if the y-axis rotation is 180 or -180 degrees
         if (Mathf.Approximately(eulerAngles.y, 180f) || Mathf.Approximately(eulerAngles.y, -180f))
@@ -66,6 +67,8 @@ public class Entity : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         entityFx = GetComponentInChildren<EntityFx>();
         rb = GetComponent<Rigidbody2D>();
+        stats = GetComponent<CharacterStats>();
+        cd = GetComponent<CapsuleCollider2D>();
     }
 
     protected virtual void Update()
@@ -95,6 +98,9 @@ public class Entity : MonoBehaviour
         facingDir = facingDir * -1;
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
+
+        if (OnFlipped != null)
+            OnFlipped();
     }
 
     public virtual void FlipController(float _x)
@@ -147,5 +153,22 @@ public class Entity : MonoBehaviour
 
     }
 
+    public virtual void Die()
+    {
+
+    }
+
+
+    public virtual void SlowMotion(float _slowPercentage, float _slowDuration)
+    {
+        anim.speed *= (1 - _slowPercentage);
+        Invoke("ReturnNormalMotion", _slowDuration);
+        Debug.Log("baba çalıştı");
+    }
+
+    protected virtual void ReturnNormalMotion()
+    {
+        anim.speed = 1;
+    }
 
 }

@@ -9,10 +9,9 @@ public class Skills : MonoBehaviour
     public float coolDownTimer;
     protected Player player;
 
-    void Start()
+    public virtual void Start()
     {
         player = PlayerManager.instance.player;
-
     }
     protected virtual void Update()
     {

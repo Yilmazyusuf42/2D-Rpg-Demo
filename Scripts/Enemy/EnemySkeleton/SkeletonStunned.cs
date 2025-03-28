@@ -28,6 +28,6 @@ public class SkeletonStunned : EnemyState
     {
         base.Exit();
         enemy.ClosePerryIcon();
-        enemy.entityFx.Invoke("CancelRedBlink", 0f);
+        enemy.entityFx.Invoke("CancelColorChange", 0f);
     }
 }

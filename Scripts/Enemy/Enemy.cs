@@ -10,7 +10,6 @@ public class Enemy : Entity
     private float freezeDuration;
     private float defaultSpeed;
 
-
     protected bool isStunned;
     [SerializeField] GameObject stunnedIcon;
     [HideInInspector] public float stateTimer;
@@ -27,6 +26,7 @@ public class Enemy : Entity
     public float battleDistance;
     [SerializeField] float attackCoolDown;
     [HideInInspector] public float lastTimeAttacked;
+    public string lastAnimation;
 
 
 
@@ -118,5 +118,17 @@ public class Enemy : Entity
         BeingFreeze(true);
         yield return new WaitForSeconds(_freezeDuration);
         BeingFreeze(false);
+    }
+
+
+    public override void SlowMotion(float _slowPercentage, float _slowDuration)
+    {
+        base.SlowMotion(_slowPercentage, _slowDuration);
+        speed *= (1 - _slowPercentage);
+    }
+    protected override void ReturnNormalMotion()
+    {
+        base.ReturnNormalMotion();
+        speed = defaultSpeed;
     }
 }

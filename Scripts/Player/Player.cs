@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Callbacks;
+using UnityEditor.U2D;
 using UnityEngine;
 
 public class Player : Entity
@@ -38,7 +39,15 @@ public class Player : Entity
     public PlayerCatchSwordState playerCatchSwordState { get; private set; }
     public PlayerThrowSwordState playerThrowSwordState { get; private set; }
     public BlackholeState playerBlacholeState { get; private set; }
+    public PlayerDieState playerDieState { get; private set; }
     #endregion
+
+
+    float defaultMoveSpeed;
+    float defaultJumpForce;
+    float defaultDashSpeed;
+
+
     public bool isBusy { get; private set; }
     protected override void Awake()
     {
@@ -57,6 +66,7 @@ public class Player : Entity
         playerCatchSwordState = new PlayerCatchSwordState(this, playerStateMachine, "CatchingSword");
         playerThrowSwordState = new PlayerThrowSwordState(this, playerStateMachine, "ThrowSword");
         playerBlacholeState = new BlackholeState(this, playerStateMachine, "Jump");
+        playerDieState = new PlayerDieState(this, playerStateMachine, "Die");
 
     }
 
@@ -65,6 +75,10 @@ public class Player : Entity
         base.Start();
         skill = SkillManager.instance;
         playerStateMachine.Initialize(idleState);
+
+        defaultMoveSpeed = speed;
+        defaultJumpForce = jumpForce;
+        defaultDashSpeed = skill.dashAbility.dashSpeed;
     }
 
 
@@ -118,4 +132,34 @@ public class Player : Entity
     {
         playerStateMachine.ChangeState(playerAirState);
     }
+
+
+    public override void Die()
+    {
+        base.Die();
+
+        playerStateMachine.ChangeState(playerDieState);
+    }
+
+
+    public override void SlowMotion(float _slowPercentage, float _slowDuration)
+    {
+        anim.speed *= (1 - _slowPercentage);
+        speed *= (1 - _slowPercentage);
+        jumpForce = jumpForce * (1 - _slowPercentage);
+        skill.dashAbility.dashSpeed *= (1 - _slowPercentage);
+        Invoke("ReturnNormalMotion", _slowDuration);
+        Debug.Log("bebe çalıştı");
+
+    }
+    protected override void ReturnNormalMotion()
+    {
+        base.ReturnNormalMotion();
+
+        speed = defaultMoveSpeed;
+        jumpForce = defaultJumpForce;
+        skill.dashAbility.dashSpeed = defaultDashSpeed;
+    }
+
+
 }
