@@ -98,7 +98,7 @@ public class Enemy : Entity
 
     }
 
-    private void BeingFreeze(bool _status)
+    public void BeingFreeze(bool _status)
     {
         if (_status)
         {
