@@ -9,6 +9,7 @@ public class PlayerState
     protected Player player;
     private string animBoolName;
     protected Rigidbody2D rb;
+    protected float dashTimer;
     
     public PlayerState(Player _player, PlayerStateMachine _playerStateMachine, string _animBoolName){
         player = _player;
@@ -23,7 +24,10 @@ public class PlayerState
     }
 
     public virtual void Update(){
+        player.playerAnim.SetFloat("yVelocity",rb.velocity.y);
         xInput = Input.GetAxisRaw("Horizontal");
+
+        dashTimer -= Time.deltaTime;
     }
 
     public virtual void Exit(){
