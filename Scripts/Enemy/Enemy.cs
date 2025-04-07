@@ -131,4 +131,23 @@ public class Enemy : Entity
         base.ReturnNormalMotion();
         speed = defaultSpeed;
     }
+
+    public override void Die()
+    {
+        base.Die();
+        stunnedIcon.SetActive(false);
+    }
+
+    public override void Damaged()
+    {
+        base.Damaged();
+        {
+            float playerX = PlayerManager.instance.player.transform.position.x;
+
+            if ((playerX < transform.position.x && facingRight) || (playerX > transform.position.x && !facingRight))
+            {
+                Flip();
+            }
+        }
+    }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -25,9 +26,11 @@ public class CloneAbility : Skills
             return;
         }
 
-        CloneAbilityController newClone = Instantiate(playerClone).GetComponent<CloneAbilityController>();
+        CloneAbilityController newClone = Instantiate(playerClone, _transform.position, Quaternion.identity).GetComponent<CloneAbilityController>();
         newClone.SetupClone(_transform, duration, Vector3.zero, GetClosestEnemy(newClone.transform), canCreateMultipleClone, player);
     }
+
+
     // Here default duration is 1f and there is ofset
     public void CreateClone(Transform _transform, Vector3 ofset)
     {
@@ -36,7 +39,7 @@ public class CloneAbility : Skills
             SkillManager.instance.crystalSkill.CreateCrystal();
             return;
         }
-        CloneAbilityController newClone = Instantiate(playerClone).GetComponent<CloneAbilityController>();
+        CloneAbilityController newClone = Instantiate(playerClone, _transform.position, Quaternion.identity).GetComponent<CloneAbilityController>();
         newClone.SetupClone(_transform, 1f, ofset, GetClosestEnemy(newClone.transform), canCreateMultipleClone, player);
     }
 
@@ -45,6 +48,7 @@ public class CloneAbility : Skills
 
     public void CreateCloneDashStart()
     {
+
         if (canCreateCloneDashStart)
             player.skill.cloneAbility.CreateClone(player.transform, player.skill.cloneAbility.cloneDuration);
     }
@@ -59,7 +63,7 @@ public class CloneAbility : Skills
     public void CreateCloneCounterAttack(Transform _enemy)
     {
         if (canCreateCloneCounterAttack)
-            StartCoroutine(CreateCounterAttackClone(_enemy, new Vector3(2 * player.facingDir, 0)));
+            StartCoroutine(CreateCounterAttackClone(_enemy, new Vector3(1.5f * player.facingDir, 0)));
 
     }
 

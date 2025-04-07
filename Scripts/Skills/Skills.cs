@@ -38,16 +38,17 @@ public class Skills : MonoBehaviour
     protected virtual Transform GetClosestEnemy(Transform _currentPos)
     {
         Transform closestEnemy = null;
-        float? closestDistance = null;
+        float closestDistance = Mathf.Infinity;
 
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(_currentPos.transform.position, 25);
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(_currentPos.transform.position, 15f);
 
         foreach (var hit in enemies)
         {
+            Debug.Log(hit.transform.position.x);
             if (hit.GetComponent<Enemy>() != null)
             {
                 float distance = Vector2.Distance(_currentPos.transform.position, hit.transform.position);
-                if (distance < closestDistance || closestDistance == null)
+                if (distance < closestDistance && hit.GetComponent<Enemy>().IsDead() != true)
                 {
                     closestDistance = distance;
                     closestEnemy = hit.transform;
@@ -55,7 +56,7 @@ public class Skills : MonoBehaviour
             }
 
         }
-
+        Debug.Log(closestEnemy);
         return closestEnemy;
 
     }

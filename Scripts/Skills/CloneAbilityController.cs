@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+
 using UnityEngine;
 
 public class CloneAbilityController : MonoBehaviour
@@ -24,6 +22,11 @@ public class CloneAbilityController : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+    }
+
+    void Start()
+    {
+        Debug.Log("my initali transform" + transform.position);
     }
 
     void Update()
@@ -83,12 +86,15 @@ public class CloneAbilityController : MonoBehaviour
 
     private void FaceClosestEnemy()
     {
+
+
         if (closestEnemy != null)
         {
             if (closestEnemy.transform.position.x < transform.position.x)
             {
                 enemyFaceDir *= -1;
-                transform.Rotate(0, 180, 0);
+                transform.Rotate(new Vector3(0, 180, 0));
+                Debug.Log("döndüm");
             }
         }
     }

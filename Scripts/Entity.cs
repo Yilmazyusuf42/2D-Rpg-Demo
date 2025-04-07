@@ -26,7 +26,7 @@ public class Entity : MonoBehaviour
     public Vector2 stunnedShaking;
 
     public int facingDir { get; private set; } = 1;
-    private bool facingRight = true;
+    protected bool facingRight = true;
 
     [Header("WallSlide Speed")]
     public float wallSlideSpeed;
@@ -40,7 +40,7 @@ public class Entity : MonoBehaviour
     [SerializeField] public Transform attackCircle;
     [SerializeField] public float attackCirclekRadius;
 
-
+    bool isDead = false;
     public Action OnFlipped;
 
     protected virtual void Awake()
@@ -131,6 +131,8 @@ public class Entity : MonoBehaviour
         entityFx.StartCoroutine(hitFunction);
         StartCoroutine(takingDamage);
 
+
+
     }
 
     public virtual IEnumerator TakingDamage()
@@ -155,8 +157,12 @@ public class Entity : MonoBehaviour
 
     public virtual void Die()
     {
+        isDead = true;
 
     }
+
+    public bool IsDead() => isDead;
+
 
 
     public virtual void SlowMotion(float _slowPercentage, float _slowDuration)
@@ -170,5 +176,4 @@ public class Entity : MonoBehaviour
     {
         anim.speed = 1;
     }
-
 }

@@ -29,6 +29,8 @@ public class HealthBarUi : MonoBehaviour
     {
         slider.maxValue = stats.GetMaxHealthValue();
         slider.value = stats.currentHealth;
+        if (stats.currentHealth <= 0)
+            gameObject.SetActive(false);
     }
 
 

@@ -23,7 +23,7 @@ public class EnemySkeleton : Enemy
         battleState = new SkeletonBattleState(this, enemyStateMachine, "Move", this);
         skeletonAttack = new SkeletonAttack(this, enemyStateMachine, "Attack", this);
         SkeletonStunned = new SkeletonStunned(this, enemyStateMachine, "Stunned", this);
-        skeletonDieState = new SkeletonDieState(this, enemyStateMachine, lastAnimation, this);
+        skeletonDieState = new SkeletonDieState(this, enemyStateMachine, "Die", this);
     }
 
     protected override void Start()

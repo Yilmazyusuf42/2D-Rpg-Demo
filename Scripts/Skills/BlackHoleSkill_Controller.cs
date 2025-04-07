@@ -136,6 +136,8 @@ public class BlackHoleSkill_Controller : MonoBehaviour
     {
         if (other.GetComponent<Enemy>() != null)
         {
+            if (other.GetComponent<Enemy>().IsDead() == true)
+                return;
             other.GetComponent<Enemy>().BeingFreeze(true);
             if (!cloneAttackReleased)
                 CreateHotkey(other);

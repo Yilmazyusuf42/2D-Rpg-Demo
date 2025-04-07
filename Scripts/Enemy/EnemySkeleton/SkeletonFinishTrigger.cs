@@ -25,4 +25,5 @@ public class SkeletonFinishTrigger : MonoBehaviour
     void TriggerPerryOn() => enemy.ShowPerryIcon();
     void TriggerPerryOff() => enemy.ClosePerryIcon();
 
+
 }

@@ -148,8 +148,8 @@ public class CharacterStats : MonoBehaviour
         }
 
 
-
-        _target.TakingDamage(totalDamage);
+        if (_target.currentHealth > 0)
+            _target.TakingDamage(totalDamage);
         //DoMagicalDamage(_target);
     }
 
@@ -328,7 +328,7 @@ public class CharacterStats : MonoBehaviour
             if (hit.GetComponent<Enemy>() != null)
             {
                 float distance = Vector2.Distance(transform.position, hit.transform.position);
-                if (distance < closestDistance && distance > 3f)
+                if (distance < closestDistance && distance > 1f)
                 {
                     closestDistance = distance;
                     closestEnemy = hit.transform;
