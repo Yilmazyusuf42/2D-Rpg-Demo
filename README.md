@@ -36,6 +36,6 @@ Watch a short demo of the gameplay:
 Hi! I'm Yusuf, a computer science student passionate about game development and 3D modeling.
 You can check out more of my work below:
 
-💼 [!LinkedIn](https://www.linkedin.com/in/yusufyilmaz)
+💼 [LinkedIn](https://www.linkedin.com/in/yusufyilmaz)
 
-🎨 [!ArtStation](https://www.artstation.com/yyilmaz)
+🎨 [ArtStation](https://www.artstation.com/yyilmaz)
