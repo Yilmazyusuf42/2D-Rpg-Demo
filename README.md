@@ -32,7 +32,7 @@ Watch a short demo of the gameplay:
 - ScriptableObject (for managing abilities)
 - Tilemaps (For the map)
 
-##🙋 About Me
+## 🙋 About Me
 Hi! I'm Yusuf, a computer science student passionate about game development and 3D modeling.
 You can check out more of my work below:
 
